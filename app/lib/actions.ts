@@ -13,6 +13,7 @@ export async function authenticate(
   formData: FormData,
 ) {
   try {
+    // console.log(formData);
     await signIn('credentials', formData);
   } catch (error) {
     if (error instanceof AuthError) {
@@ -38,7 +39,7 @@ const FormSchema = z.object({
   status: z.enum(['pending', 'paid'], {
     invalid_type_error: 'Please select an invoice status.',
   }),
-  date: z.string(),
+  date: z.string(), 
 });
 
 const CreateInvoice = FormSchema.omit({ id: true, date: true });

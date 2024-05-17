@@ -1,0 +1,2323 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model aim_example_test {
+  no      Int      @id @default(autoincrement())
+  col1    String?  @db.VarChar(100)
+  col2    String?  @db.VarChar(100)
+  regr_no BigInt
+  reg_dt  DateTime @db.DateTime(0)
+  modr_no BigInt
+  mod_dt  DateTime @db.DateTime(0)
+}
+
+model sc_biz_exam {
+  biz_exam_no BigInt   @id @default(autoincrement())
+  prjt_no     BigInt
+  emp_no      String   @db.VarChar(128)
+  exam_year   String   @db.VarChar(4)
+  exam_date   DateTime @db.Date
+  gender      String   @db.VarChar(1)
+  birth_dt    String   @db.VarChar(8)
+  hosp_name   String?  @db.VarChar(100)
+  mnfst_cont  String?  @db.Text
+  regr_no     BigInt
+  reg_dt      DateTime @db.DateTime(0)
+  modr_no     BigInt
+  mod_dt      DateTime @db.DateTime(0)
+
+  @@unique([prjt_no, emp_no, exam_date], map: "sc_biz_exam_UN")
+}
+
+model sc_biz_exam_item {
+  biz_item_no BigInt   @id @default(autoincrement())
+  biz_exam_no BigInt
+  item_code   String   @db.VarChar(24)
+  item_value  String   @db.VarChar(1024)
+  regr_no     BigInt
+  reg_dt      DateTime @db.DateTime(0)
+  modr_no     BigInt
+  mod_dt      DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_care_msg {
+  care_msg_no BigInt   @id @default(autoincrement())
+  use_tf      String   @db.Char(1)
+  care_msg_nm String   @db.VarChar(100)
+  regr_no     BigInt
+  reg_dt      DateTime @db.DateTime(0)
+  modr_no     BigInt
+  mod_dt      DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_care_msg_snrio {
+  care_msg_no          BigInt
+  snrio_seq            Int      @db.SmallInt
+  snrio_tp_cd          String   @db.VarChar(20)
+  snrio_cont           String?  @db.Text
+  text_item_tf         String   @default("n") @db.Char(1)
+  img_item_tf          String   @default("n") @db.Char(1)
+  crsl_tp_tf           String   @default("n") @db.Char(1)
+  url_item_tf          String   @default("n") @db.Char(1)
+  fdbk_item_tf         String   @default("n") @db.Char(1)
+  snrio_url            String?  @db.VarChar(255)
+  snrio_url_btn_use_tf String   @default("n") @db.Char(1)
+  sort_seq             Int      @default(99) @db.SmallInt
+  mebi_tp_cd           String?  @db.VarChar(20)
+  dup_rspns_prms_tf    String?  @db.Char(1)
+  regr_no              BigInt
+  reg_dt               DateTime @db.DateTime(0)
+  modr_no              BigInt
+  mod_dt               DateTime @db.DateTime(0)
+
+  @@id([care_msg_no, snrio_seq])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_chat {
+  id       BigInt   @id @default(autoincrement())
+  api_type String   @db.VarChar(255)
+  method   String   @db.VarChar(255)
+  url      String?  @db.VarChar(1000)
+  emp_no   String?  @db.VarChar(255)
+  token    String?  @db.VarChar(1000)
+  dest_url String?  @db.VarChar(255)
+  use_tf   String   @db.Char(1)
+  regr_no  BigInt
+  reg_dt   DateTime @db.DateTime(0)
+  modr_no  BigInt
+  mod_dt   DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_chat_hist {
+  id            BigInt    @id @default(autoincrement())
+  contents_id   BigInt?
+  prjt_no       BigInt?
+  prgm_no       BigInt?
+  prgm_week_seq BigInt?
+  emp_no        String    @db.VarChar(255)
+  mbr_no        BigInt
+  mngr_no       String?   @db.VarChar(255)
+  mngr_id       String    @db.VarChar(255)
+  chat_type_cd  String    @db.VarChar(255)
+  ans_stts_cd   String    @db.VarChar(255)
+  question      String    @db.VarChar(3000)
+  answer        String?   @db.VarChar(3000)
+  question_dt   DateTime  @db.DateTime(0)
+  answer_dt     DateTime? @db.DateTime(0)
+  regr_no       BigInt
+  reg_dt        DateTime  @db.DateTime(0)
+  modr_no       BigInt
+  mod_dt        DateTime  @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_chat_log {
+  id             BigInt   @id @default(autoincrement())
+  chat_id        BigInt
+  request        String   @db.Text
+  http_status_cd String   @db.Char(3)
+  call_status_cd BigInt
+  log            String   @db.Text
+  regr_no        BigInt
+  reg_dt         DateTime @db.DateTime(0)
+  modr_no        BigInt
+  mod_dt         DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_exam_std_stg {
+  stg_no       BigInt   @id @default(autoincrement())
+  source_type  String   @db.Char(1)
+  biz_exam_no  BigInt?
+  scrape_no    BigInt?
+  std_item_cd  String   @db.VarChar(20)
+  std_item_val String   @db.VarChar(1024)
+  regr_no      BigInt
+  reg_dt       DateTime @db.DateTime(0)
+  modr_no      BigInt
+  mod_dt       DateTime @db.DateTime(0)
+}
+
+model sc_grade_history {
+  grade_no                BigInt   @id @default(autoincrement())
+  prjt_no                 BigInt
+  emp_no                  String   @db.VarChar(20)
+  biz_year                String   @db.VarChar(4)
+  biz_dt                  String   @db.VarChar(10)
+  waist_factor            Decimal  @db.Decimal(10, 2)
+  press_factor            Decimal  @db.Decimal(10, 2)
+  fbs_factor              Decimal  @db.Decimal(10, 2)
+  tc_factor               Decimal  @db.Decimal(10, 2)
+  smoke_factor            Decimal  @db.Decimal(10, 2)
+  activity_factor         Decimal  @db.Decimal(10, 2)
+  med_sugar_factor        Decimal  @db.Decimal(10, 2)
+  med_press_factor        Decimal  @db.Decimal(10, 2)
+  age                     Int
+  gender                  String   @db.VarChar(1)
+  has_tc                  Boolean
+  gfr_factor              Decimal  @db.Decimal(10, 2)
+  cmplx_rltv_risk         Decimal  @db.Decimal(10, 2)
+  private_cmplx_rltv_risk Decimal  @db.Decimal(10, 2)
+  adjust_cmplx_rltv_risk  Decimal  @db.Decimal(10, 2)
+  cmplx_rltv_risk_age     Decimal  @db.Decimal(10, 2)
+  abs_risk_weight         Decimal  @db.Decimal(10, 2)
+  adjust_abs_risk_weight  Decimal  @db.Decimal(10, 2)
+  adjust_age              Int
+  risk_grade_level        Int
+  adjust_risk_perc        Decimal  @db.Decimal(10, 2)
+  regr_no                 BigInt
+  reg_dt                  DateTime @db.DateTime(0)
+  modr_no                 BigInt
+  mod_dt                  DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr {
+  mbr_no                BigInt    @id @default(autoincrement())
+  clco_no               BigInt
+  clco_dept_cd          String?   @db.VarChar(20)
+  emp_no                String    @db.VarChar(128)
+  mbr_id                String    @db.VarChar(128)
+  mbr_pswd              String    @db.VarChar(100)
+  mbr_nm                String    @db.VarChar(128)
+  brdt                  DateTime  @db.Date
+  gen_cd                String    @db.VarChar(50)
+  mbph_no               String    @db.VarChar(50)
+  email_addr            String    @db.VarChar(255)
+  fail_pswd_cnt         Int?      @default(0) @db.SmallInt
+  join_dt               DateTime  @db.DateTime(0)
+  rcnt_cntn_dt          DateTime? @db.DateTime(0)
+  drmc_cnvs_dt          DateTime? @db.DateTime(0)
+  chge_pswd_dt          DateTime? @default(now()) @db.DateTime(0)
+  mbr_stts_cd           String    @db.VarChar(20)
+  tmnl_tkn_val          String?   @db.VarChar(250)
+  tmnl_os_nm            String?   @db.VarChar(100)
+  tmnl_app_ver_nm       String?   @db.VarChar(100)
+  last_tmnl_sync_dt     DateTime? @db.DateTime(0)
+  aos_permission        Int?      @default(0) @db.SmallInt
+  push_status           Int?      @default(0) @db.SmallInt
+  mbr_photo_file_mng_no BigInt?
+  app_prgrs_stag_val    String?   @db.VarChar(100)
+  regr_no               BigInt
+  reg_dt                DateTime  @db.DateTime(0)
+  modr_no               BigInt
+  mod_dt                DateTime  @db.DateTime(0)
+  out_tp_cd             String?   @db.VarChar(20)
+  out_tp_ttl            String?   @db.VarChar(1000)
+  out_join_dt           DateTime? @db.DateTime(0)
+  mbr_sctn_cd           String?   @db.VarChar(20)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr_care_msg_hist {
+  mbr_care_msg_hist_no     BigInt    @id @default(autoincrement())
+  mbr_no                   BigInt
+  prjt_no                  BigInt
+  prgm_no                  BigInt
+  prgm_week_seq            Int       @db.SmallInt
+  week_ymd_seq             Int?      @db.SmallInt
+  care_msg_no              BigInt
+  snrio_seq                Int       @db.SmallInt
+  msg_rcptn_dt             DateTime? @db.DateTime(0)
+  idnty_tf                 String    @default("n") @db.Char(1)
+  msg_idnty_dt             DateTime? @db.DateTime(0)
+  main_act_flfmt_idnty_val String?   @db.VarChar(100)
+  regr_no                  BigInt
+  reg_dt                   DateTime  @db.DateTime(0)
+  modr_no                  BigInt
+  mod_dt                   DateTime  @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr_dsse_mng {
+  mbr_no        BigInt
+  dsse_cd       String   @db.VarChar(20)
+  dsse_dgns_tf  String   @default("n") @db.Char(1)
+  mdcn_tkmdc_tf String   @default("n") @db.Char(1)
+  regr_no       BigInt
+  reg_dt        DateTime @db.DateTime(0)
+  modr_no       BigInt
+  mod_dt        DateTime @db.DateTime(0)
+  fmh_tf        String?  @db.Char(1)
+  itrst_dsse_tf String?  @db.Char(1)
+
+  @@id([mbr_no, dsse_cd])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr_hlth_mng_hist {
+  hist_no     BigInt   @id @default(autoincrement())
+  mbr_no      BigInt
+  hist_dt     DateTime @db.DateTime(0)
+  bass_cd     String   @db.VarChar(20)
+  reg_mng_val Decimal  @db.Decimal(12, 2)
+  regr_no     BigInt
+  reg_dt      DateTime @db.DateTime(0)
+  modr_no     BigInt
+  mod_dt      DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr_init_ans {
+  mbr_init_ans_no     BigInt   @id @default(autoincrement())
+  mbr_no              BigInt
+  week_ymd_seq        Int      @default(1) @db.SmallInt
+  prgm_order          BigInt?
+  mebi_init_ans_no_01 String?  @db.Char(1)
+  mebi_init_ans_no_03 String?  @db.Char(1)
+  regr_no             BigInt
+  reg_dt              DateTime @db.DateTime(0)
+  modr_no             BigInt
+  mod_dt              DateTime @db.DateTime(0)
+  mebi_init_ans_no_02 String?  @db.Char(1)
+  mebi_init_ans_no_04 String?  @db.Char(1)
+  mebi_init_ans_no_05 String?  @db.Char(1)
+  mebi_init_ans_no_06 String?  @db.Char(1)
+  mebi_init_ans_no_07 String?  @db.Char(1)
+  mebi_init_ans_no_08 String?  @db.Char(1)
+  mebi_init_ans_no_09 String?  @db.Char(1)
+  mebi_init_ans_no_10 String?  @db.Char(1)
+  mebi_init_ans_no_11 String?  @db.Char(1)
+  mebi_init_ans_no_12 String?  @db.Char(1)
+  prjt_no             BigInt?
+  prgm_no             BigInt?
+
+  @@unique([mbr_no, prjt_no, prgm_no, week_ymd_seq, prgm_order], map: "mbr_no")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr_init_ans_hist {
+  mbr_init_ans_hist_no BigInt   @id @default(autoincrement())
+  mbr_no               BigInt
+  prjct_no             BigInt
+  week_ymd_seq         Int      @default(1) @db.SmallInt
+  mebi_init_ans_no_01  String?  @db.Char(1)
+  mebi_init_ans_no_02  String?  @db.Char(1)
+  mebi_init_ans_no_03  String?  @db.Char(1)
+  mebi_init_ans_no_04  String?  @db.Char(1)
+  mebi_init_ans_no_05  String?  @db.Char(1)
+  mebi_init_ans_no_06  String?  @db.Char(1)
+  mebi_init_ans_no_07  String?  @db.Char(1)
+  mebi_init_ans_no_08  String?  @db.Char(1)
+  mebi_init_ans_no_09  String?  @db.Char(1)
+  mebi_init_ans_no_10  String?  @db.Char(1)
+  mebi_init_ans_no_11  String?  @db.Char(1)
+  mebi_init_ans_no_12  String?  @db.Char(1)
+  regr_no              BigInt
+  reg_dt               DateTime @db.DateTime(0)
+  modr_no              BigInt
+  mod_dt               DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr_init_care_msg {
+  mbr_init_care_msg_no BigInt   @id @default(autoincrement())
+  mbr_no               BigInt
+  week_ymd_seq         Int      @default(1) @db.SmallInt
+  prgm_order           BigInt?
+  care_yn              String?  @db.Char(1)
+  regr_no              BigInt
+  reg_dt               DateTime @db.DateTime(0)
+  modr_no              BigInt
+  mod_dt               DateTime @db.DateTime(0)
+  prjt_no              BigInt?
+  prgm_No              BigInt?
+
+  @@unique([mbr_no, prjt_no, prgm_No, week_ymd_seq, prgm_order], map: "mbr_no")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr_init_care_msg_hist {
+  mbr_init_care_msg_no BigInt   @id @default(autoincrement())
+  mbr_no               BigInt
+  prjct_no             BigInt
+  week_ymd_seq         Int      @default(1) @db.SmallInt
+  care_yn              String?  @db.Char(1)
+  regr_no              BigInt
+  reg_dt               DateTime @db.DateTime(0)
+  modr_no              BigInt
+  mod_dt               DateTime @db.DateTime(0)
+  prgm_no              BigInt?
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr_lgn_hist {
+  hist_no BigInt   @id @default(autoincrement())
+  mbr_no  BigInt
+  regr_no BigInt
+  reg_dt  DateTime @db.DateTime(0)
+  modr_no BigInt
+  mod_dt  DateTime @db.DateTime(0)
+}
+
+model sc_mbr_life_habit {
+  habit_no      BigInt   @id @default(autoincrement())
+  mbr_no        BigInt
+  hist_dt       DateTime @db.Date
+  habit_qstn_cd String   @db.VarChar(10)
+  habit_ans_cd  String   @db.VarChar(10)
+  regr_no       BigInt
+  reg_dt        DateTime @db.DateTime(0)
+  modr_no       BigInt
+  mod_dt        DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr_log {
+  log_no BigInt    @id @default(autoincrement())
+  log_cd String?   @db.VarChar(7)
+  mbr_no BigInt
+  uri    String    @db.VarChar(100)
+  origin String    @db.VarChar(100)
+  desc   String?   @db.VarChar(100)
+  reg_dt DateTime? @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr_meal_fd {
+  meal_hist_no  BigInt
+  fd_seq        Int      @db.SmallInt
+  fd_nm         String   @db.VarChar(100)
+  intk_val      Decimal  @db.Decimal(12, 2)
+  ingst_cal_val Decimal? @db.Decimal(12, 2)
+  cbhd_cmp_val  Decimal? @db.Decimal(12, 2)
+  prtn_cmp_val  Decimal? @db.Decimal(12, 2)
+  fat_cmp_val   Decimal? @db.Decimal(12, 2)
+  scrd_cmp_val  Decimal? @db.Decimal(12, 2)
+  na_cmp_val    Decimal? @db.Decimal(12, 2)
+  clst_cmp_val  Decimal? @db.Decimal(12, 2)
+  ftyac_cmp_val Decimal? @db.Decimal(12, 2)
+  trfat_cmp_val Decimal? @db.Decimal(12, 2)
+  regr_no       BigInt
+  reg_dt        DateTime @db.DateTime(0)
+  modr_no       BigInt
+  mod_dt        DateTime @db.DateTime(0)
+
+  @@id([meal_hist_no, fd_seq])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr_meal_hist {
+  meal_hist_no           BigInt   @id @default(autoincrement())
+  mbr_no                 BigInt
+  hist_ymd               DateTime @db.Date
+  meal_sctn_cd           String   @db.VarChar(20)
+  inpt_sctn_cd           String   @db.VarChar(20)
+  meal_photo_file_mng_no BigInt?
+  ingst_cal_val          Decimal? @db.Decimal(12, 2)
+  regr_no                BigInt
+  reg_dt                 DateTime @db.DateTime(0)
+  modr_no                BigInt
+  mod_dt                 DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr_mebi_chc {
+  mbr_mebi_chc_no BigInt   @id @default(autoincrement())
+  mbr_no          BigInt
+  prjt_no         BigInt
+  prgm_no         BigInt?
+  prgm_week_seq   Int?     @db.SmallInt
+  week_ymd_seq    Int?     @db.SmallInt
+  mebi_no         BigInt
+  mebi_qstn_seq   Int      @db.SmallInt
+  rsqt_ans_nm     String?  @db.VarChar(100)
+  regr_no         BigInt
+  reg_dt          DateTime @db.DateTime(0)
+  modr_no         BigInt
+  mod_dt          DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr_mebi_chc_ans {
+  mbr_mebi_chc_no BigInt
+  mebi_no         BigInt
+  mebi_qstn_seq   Int      @db.SmallInt
+  mebi_ans_seq    Int      @db.SmallInt
+  chc_seq         Int?     @db.SmallInt
+  regr_no         BigInt
+  reg_dt          DateTime @db.DateTime(0)
+  modr_no         BigInt
+  mod_dt          DateTime @db.DateTime(0)
+  rsqt_ans_nm     String?  @db.VarChar(100)
+
+  @@id([mbr_mebi_chc_no, mebi_ans_seq])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr_mssn_chk_hist {
+  mbr_mssn_chk_hist_no BigInt    @id @default(autoincrement())
+  mbr_no               BigInt
+  prjt_no              BigInt
+  prgm_no              BigInt
+  prgm_week_seq        Int       @db.SmallInt
+  week_ymd_seq         Int?      @db.SmallInt
+  prgm_order           BigInt?
+  mssn_no              BigInt
+  mssn_chk_tf          String    @db.Char(1)
+  mssn_chk_ymd         DateTime? @db.Date
+  regr_no              BigInt
+  reg_dt               DateTime  @db.DateTime(0)
+  modr_no              BigInt
+  mod_dt               DateTime  @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr_mssn_hist {
+  mbr_mssn_hist_no BigInt    @id @default(autoincrement())
+  mbr_no           BigInt
+  prjt_no          BigInt
+  prgm_no          BigInt
+  prgm_week_seq    Int       @db.SmallInt
+  week_ymd_seq     Int?      @db.SmallInt
+  prgm_order       BigInt?
+  mssn_no          BigInt
+  mssn_flfmt_tf    String    @db.Char(1)
+  mssn_flfmt_ymd   DateTime? @db.Date
+  regr_no          BigInt
+  reg_dt           DateTime  @db.DateTime(0)
+  modr_no          BigInt
+  mod_dt           DateTime  @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr_prgm_hist {
+  mbr_prgm_hist_no     BigInt    @id @default(autoincrement())
+  mbr_no               BigInt
+  prjt_no              BigInt
+  prgm_no              BigInt
+  ptcp_bgng_ymd        DateTime  @db.Date
+  prgm_cmptn_tf        String    @db.Char(1)
+  ptcp_end_ymd         DateTime? @db.Date
+  mng_goal_bass_cd     String?   @db.VarChar(20)
+  mng_goal_val         Decimal?  @db.Decimal(12, 2)
+  mng_goal_unit_cd     String?   @db.VarChar(20)
+  prgrs_stop_tf        String    @default("n") @db.Char(1)
+  prgrs_stop_dt        DateTime? @db.DateTime(0)
+  prgrs_stop_caus_desc String?   @db.Text
+  prgm_grp_cd          String?   @db.VarChar(20)
+  regr_no              BigInt
+  reg_dt               DateTime  @db.DateTime(0)
+  modr_no              BigInt
+  mod_dt               DateTime  @db.DateTime(0)
+
+  @@unique([mbr_no, prjt_no, prgm_no, ptcp_bgng_ymd], map: "sc_mbr_prgm_hist_UN")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr_prjt {
+  mbr_no               BigInt
+  prjt_no              BigInt
+  prtpnt_sctn_cd       String    @db.VarChar(20)
+  prgrs_stop_tf        String    @db.Char(1)
+  prgrs_stop_dt        DateTime? @db.DateTime(0)
+  prgrs_stop_caus_desc String?   @db.Text
+  ptcp_bgng_ymd        DateTime? @db.Date
+  ptcp_end_ymd         DateTime? @db.Date
+  frst_bmi_val         Decimal?  @db.Decimal(12, 2)
+  end_bmi_val          Decimal?  @db.Decimal(12, 2)
+  regr_no              BigInt
+  reg_dt               DateTime  @db.DateTime(0)
+  modr_no              BigInt
+  mod_dt               DateTime  @db.DateTime(0)
+
+  @@id([mbr_no, prjt_no])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr_push_hist {
+  mbr_push_hist_no BigInt    @id @default(autoincrement())
+  mbr_no           BigInt
+  push_no          BigInt
+  idnty_tf         String    @default("n") @db.Char(1)
+  idnty_dt         DateTime? @db.DateTime(0)
+  regr_no          BigInt
+  reg_dt           DateTime  @db.DateTime(0)
+  modr_no          BigInt
+  mod_dt           DateTime  @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr_push_stng {
+  mbr_no            BigInt   @id
+  ntc_mthd_cd       String   @db.VarChar(20)
+  care_msg_ntc_tf   String   @db.Char(1)
+  cbot_dscsn_ntc_tf String   @db.Char(1)
+  inst_msng_ntc_tf  String   @db.Char(1)
+  etc_inq_gd_ntc_tf String   @db.Char(1)
+  ntc_hr            Int?     @db.SmallInt
+  regr_no           BigInt
+  reg_dt            DateTime @db.DateTime(0)
+  modr_no           BigInt
+  mod_dt            DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr_snrio_mebi_chc {
+  mbr_mebi_chc_no BigInt   @id @default(autoincrement())
+  mbr_no          BigInt
+  prjt_no         BigInt
+  prgm_no         BigInt
+  prgm_week_seq   Int      @db.SmallInt
+  week_ymd_seq    Int?     @db.SmallInt
+  care_msg_no     BigInt
+  snrio_seq       Int      @db.SmallInt
+  mebi_qstn_seq   Int      @db.SmallInt
+  rsqt_ans_nm     String?  @db.VarChar(100)
+  regr_no         BigInt
+  reg_dt          DateTime @db.DateTime(0)
+  modr_no         BigInt
+  mod_dt          DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr_snrio_mebi_chc_ans {
+  mbr_mebi_chc_no BigInt
+  care_msg_no     BigInt
+  snrio_seq       Int      @db.SmallInt
+  mebi_qstn_seq   Int      @db.SmallInt
+  mebi_ans_seq    Int      @db.SmallInt
+  chc_seq         Int?     @db.SmallInt
+  regr_no         BigInt
+  reg_dt          DateTime @db.DateTime(0)
+  modr_no         BigInt
+  mod_dt          DateTime @db.DateTime(0)
+
+  @@id([mbr_mebi_chc_no, mebi_ans_seq])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr_trms_agr_hist {
+  mbr_no  BigInt
+  trms_no BigInt
+  agr_dt  DateTime @db.DateTime(0)
+  regr_no BigInt
+  reg_dt  DateTime @db.DateTime(0)
+  modr_no BigInt
+  mod_dt  DateTime @db.DateTime(0)
+
+  @@id([mbr_no, trms_no])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mbr_trms_agr_scr_hist {
+  agr_no  BigInt   @id @default(autoincrement())
+  clco_no BigInt
+  emp_no  String   @db.VarChar(20)
+  trms_no BigInt
+  agr_dt  DateTime @db.DateTime(0)
+  regr_no BigInt
+  reg_dt  DateTime @db.DateTime(0)
+  modr_no BigInt
+  mod_dt  DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mebi_ans {
+  mebi_no           BigInt
+  prjt_no           BigInt
+  mebi_qstn_seq     Int      @db.SmallInt
+  mebi_ans_seq      Int      @db.SmallInt
+  ans_nm            String?  @db.VarChar(100)
+  mebi_rcrd_bass_cd String?  @db.VarChar(20)
+  ans_dsse_cd       String?  @db.VarChar(20)
+  regr_no           BigInt
+  reg_dt            DateTime @db.DateTime(0)
+  modr_no           BigInt
+  mod_dt            DateTime @db.DateTime(0)
+
+  @@id([mebi_no, prjt_no, mebi_qstn_seq, mebi_ans_seq])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mebi_mng {
+  mebi_no       BigInt   @id @default(autoincrement())
+  mebi_nm       String   @db.VarChar(100)
+  use_tf        String   @db.Char(1)
+  cmps_qstn_cnt Int
+  regr_no       BigInt
+  reg_dt        DateTime @db.DateTime(0)
+  modr_no       BigInt
+  mod_dt        DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mebi_qstn {
+  mebi_no              BigInt
+  prjt_no              BigInt
+  mebi_qstn_seq        Int      @db.SmallInt
+  mebi_tp_cd           String   @db.VarChar(20)
+  qstn_nm              String   @db.VarChar(100)
+  dup_rspns_prms_tf    String   @default("n") @db.Char(1)
+  ans_item_cnt         Int?
+  dup_rspns_prms_cnt   Int?
+  regr_no              BigInt
+  reg_dt               DateTime @db.DateTime(0)
+  modr_no              BigInt
+  mod_dt               DateTime @db.DateTime(0)
+  hlth_info_mebi_tp_cd String?  @db.VarChar(20)
+
+  @@id([mebi_no, prjt_no, mebi_qstn_seq])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mssn {
+  mssn_no           BigInt   @id @default(autoincrement())
+  mssn_sctn_cd      String   @db.VarChar(20)
+  item_sctn_cd      String?  @db.VarChar(20)
+  mssn_ttl          String   @db.VarChar(255)
+  use_tf            String   @db.Char(1)
+  img_file_mng_no   BigInt?
+  theme_val         String?  @db.Char(7)
+  sub_theme_val     String?  @db.Char(7)
+  btn_nm            String?  @db.VarChar(100)
+  main_nm           String?  @db.VarChar(100)
+  sub_nm            String?  @db.VarChar(100)
+  meal_cnt          Int?
+  brkf_meal_tf      String?  @db.Char(1)
+  lnch_meal_tf      String?  @db.Char(1)
+  dnnr_meal_tf      String?  @db.Char(1)
+  ntml_tf           String?  @db.Char(1)
+  etbm_tf           String?  @db.Char(1)
+  mssn_rcrd_bass_cd String?  @db.VarChar(20)
+  encrg_msg_use_tf  String?  @db.Char(1)
+  encrg_cont        String?  @db.Text
+  bot_id            BigInt?
+  block_id          BigInt?
+  regr_no           BigInt
+  reg_dt            DateTime @db.DateTime(0)
+  modr_no           BigInt
+  mod_dt            DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_mssn_atch_file {
+  atch_file_no    BigInt   @id @default(autoincrement())
+  item_sctn_cd    String?  @db.VarChar(20)
+  img_file_mng_no BigInt?
+  theme_val       String?  @db.Char(7)
+  sub_theme_val   String?  @db.Char(7)
+  regr_no         BigInt
+  reg_dt          DateTime @db.DateTime(0)
+  modr_no         BigInt
+  mod_dt          DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_prgm {
+  prgm_no              BigInt   @id @default(autoincrement())
+  use_tf               String   @db.Char(1)
+  cmps_week_cnt        Int
+  prgm_ttl             String   @db.VarChar(255)
+  mng_cont             String   @db.Text
+  mng_goal_stng_cd     String   @db.VarChar(20)
+  mng_goal_bass_cd     String?  @db.VarChar(20)
+  mng_goal_unit_cd     String?  @db.VarChar(20)
+  mng_goal_gen_sctn_tf String   @db.Char(1)
+  spcl_mssn_use_tf     String   @db.Char(1)
+  spcl_mssn_no         BigInt?
+  logo_img_file_mng_no BigInt?
+  regr_no              BigInt
+  reg_dt               DateTime @db.DateTime(0)
+  modr_no              BigInt
+  mod_dt               DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_prgm_care_msg {
+  cmps_no       BigInt   @id @default(autoincrement())
+  prgm_no       BigInt
+  prgm_week_seq Int      @db.SmallInt
+  week_ymd_seq  Int?     @db.SmallInt
+  care_msg_no   BigInt
+  regr_no       BigInt
+  reg_dt        DateTime @db.DateTime(0)
+  modr_no       BigInt
+  mod_dt        DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_prgm_cntns_stng {
+  prgm_no                   BigInt
+  prgm_week_seq             Int      @db.SmallInt
+  thm_nm                    String   @db.VarChar(100)
+  tpc_nm                    String   @db.VarChar(100)
+  main_act_cont             String   @db.Text
+  bot_id                    Int?
+  block_id                  Int?
+  recent_bot_id             Int?
+  recent_block_id           Int?
+  main_act_img_file_mng_no  BigInt?
+  inner_act_img_file_mng_no BigInt?
+  care_msg_stng_tf          String   @default("n") @db.Char(1)
+  mebi_stng_tf              String   @default("n") @db.Char(1)
+  srvy_stng_tf              String   @default("n") @db.Char(1)
+  week_mssn_stng_tf         String   @default("n") @db.Char(1)
+  dd_dd_mssn_stng_tf        String   @default("n") @db.Char(1)
+  regr_no                   BigInt
+  reg_dt                    DateTime @db.DateTime(0)
+  modr_no                   BigInt
+  mod_dt                    DateTime @db.DateTime(0)
+
+  @@id([prgm_no, prgm_week_seq])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_prgm_mebi {
+  cmps_no       BigInt   @id @default(autoincrement())
+  prgm_no       BigInt
+  prgm_week_seq Int?     @db.SmallInt
+  week_ymd_seq  Int?     @db.SmallInt
+  mebi_no       BigInt
+  regr_no       BigInt
+  reg_dt        DateTime @db.DateTime(0)
+  modr_no       BigInt
+  mod_dt        DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_prgm_mng_goal {
+  prgm_no           BigInt
+  stng_sctn_cd      String   @db.VarChar(20)
+  sect_inpt_stng_tf String   @db.Char(1)
+  goal_bgng_nm      String   @db.VarChar(100)
+  goal_bgng_rng_cd  String   @db.VarChar(20)
+  goal_end_nm       String?  @db.VarChar(100)
+  goal_end_rng_cd   String?  @db.VarChar(20)
+  regr_no           BigInt
+  reg_dt            DateTime @db.DateTime(0)
+  modr_no           BigInt
+  mod_dt            DateTime @db.DateTime(0)
+
+  @@id([prgm_no, stng_sctn_cd])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_prgm_mssn {
+  cmps_no            BigInt   @id @default(autoincrement())
+  prgm_no            BigInt
+  prgm_week_seq      Int      @db.SmallInt
+  week_ymd_seq       Int?     @db.SmallInt
+  mssn_no            BigInt
+  mssn_sctn_cd       String   @db.VarChar(20)
+  mssn_rch_cndt_cd   String?  @db.VarChar(20)
+  echdd_goal_val     Decimal? @db.Decimal(12, 2)
+  echdd_goal_unit_cd String?  @db.VarChar(20)
+  wkly_goal_val      Decimal? @db.Decimal(12, 2)
+  wkly_goal_unit_cd  String?  @db.VarChar(20)
+  regr_no            BigInt
+  reg_dt             DateTime @db.DateTime(0)
+  modr_no            BigInt
+  mod_dt             DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_prgm_srvy {
+  cmps_no       BigInt   @id @default(autoincrement())
+  prgm_no       BigInt
+  prgm_week_seq Int?     @db.SmallInt
+  week_ymd_seq  Int?     @db.SmallInt
+  mebi_no       BigInt
+  regr_no       BigInt
+  reg_dt        DateTime @db.DateTime(0)
+  modr_no       BigInt
+  mod_dt        DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_prjt {
+  prjt_no               BigInt    @id @default(autoincrement())
+  clco_no               BigInt
+  prjt_nm               String    @db.VarChar(100)
+  prjt_stts_cd          String    @db.VarChar(20)
+  prtc_aply_stng_tf     String    @db.Char(1)
+  prtc_aply_bgng_dt     DateTime? @db.DateTime(0)
+  prtc_aply_end_dt      DateTime? @db.DateTime(0)
+  rsvt_stng_tf          String    @db.Char(1)
+  prjt_bgng_dt          DateTime? @db.DateTime(0)
+  prjt_end_dt           DateTime? @db.DateTime(0)
+  main_logo_file_mng_no BigInt?
+  bgng_mebi_no          BigInt
+  cmps_prgm_cnt         Int
+  gnrl_prtpnt_cnt       Int?
+  mng_prtpnt_cnt        Int?
+  gnrl_fnsr_cnt         Int?
+  mng_fnsr_cnt          Int?
+  regr_no               BigInt
+  reg_dt                DateTime  @db.DateTime(0)
+  modr_no               BigInt
+  mod_dt                DateTime  @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_prjt_prgm {
+  prjt_no         BigInt   @default(autoincrement())
+  prgm_no         BigInt
+  sort_seq        Int?     @db.SmallInt
+  gnrl_prtpnt_cnt Int?
+  mng_prtpnt_cnt  Int?
+  gnrl_fnsr_cnt   Int?
+  mng_fnsr_cnt    Int?
+  regr_no         BigInt
+  reg_dt          DateTime @db.DateTime(0)
+  modr_no         BigInt
+  mod_dt          DateTime @db.DateTime(0)
+
+  @@id([prjt_no, prgm_no])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_prjt_prgm_rcmdtn {
+  prjt_no         BigInt
+  prgm_rcmdtn_seq Int      @db.SmallInt
+  rcmdtn_prgm_no  BigInt
+  regr_no         BigInt
+  reg_dt          DateTime @db.DateTime(0)
+  modr_no         BigInt
+  mod_dt          DateTime @db.DateTime(0)
+
+  @@id([prjt_no, prgm_rcmdtn_seq])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_prjt_prtpnt {
+  prjt_no        BigInt
+  emp_no         String    @db.VarChar(20)
+  clco_no        BigInt
+  prtpnt_sctn_cd String    @db.VarChar(20)
+  prtpnt_nm      String    @db.VarChar(100)
+  clco_dept_cd   String?   @db.VarChar(20)
+  brdt           DateTime  @db.Date
+  mbph_no        String    @db.VarChar(20)
+  gen_cd         String    @db.VarChar(20)
+  email_addr     String    @db.VarChar(255)
+  utztn_bgng_dt  DateTime? @db.DateTime(0)
+  utztn_rstr_dt  DateTime? @db.DateTime(0)
+  auth_key       String?   @db.VarChar(100)
+  regr_no        BigInt
+  reg_dt         DateTime  @db.DateTime(0)
+  modr_no        BigInt
+  mod_dt         DateTime  @db.DateTime(0)
+
+  @@id([prjt_no, emp_no])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_prjt_prtpnt_dsse_info {
+  prjt_no BigInt
+  emp_no  String   @db.VarChar(20)
+  dsse_cd String   @db.VarChar(20)
+  regr_no BigInt
+  reg_dt  DateTime @db.DateTime(0)
+  modr_no BigInt
+  mod_dt  DateTime @db.DateTime(0)
+
+  @@id([prjt_no, emp_no, dsse_cd])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_prjt_prtpnt_hlth_mng {
+  prjt_no     BigInt
+  emp_no      String   @db.VarChar(20)
+  bass_cd     String   @db.VarChar(20)
+  reg_mng_val Decimal  @db.Decimal(12, 2)
+  regr_no     BigInt
+  reg_dt      DateTime @db.DateTime(0)
+  modr_no     BigInt
+  mod_dt      DateTime @db.DateTime(0)
+
+  @@id([prjt_no, emp_no, bass_cd])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_prjt_rskf {
+  prjt_no BigInt
+  bass_cd String   @db.VarChar(20)
+  use_tf  String   @db.Char(1)
+  regr_no BigInt
+  reg_dt  DateTime @db.DateTime(0)
+  modr_no BigInt
+  mod_dt  DateTime @db.DateTime(0)
+
+  @@id([prjt_no, bass_cd])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_recept_agree_log {
+  id       BigInt   @id @default(autoincrement())
+  prjt_no  BigInt
+  emp_no   BigInt
+  agree_dt DateTime @db.DateTime(0)
+  reg_no   BigInt
+  reg_dt   DateTime @db.DateTime(0)
+  mod_no   BigInt
+  mod_dt   DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_recept_dsse_gen_cd {
+  id             BigInt   @id @default(autoincrement())
+  recept_dsse_cd String   @db.VarChar(20)
+  gen_cd         String   @db.VarChar(20)
+  bass_cd        String   @db.VarChar(20)
+  mng_val        Decimal  @db.Decimal(12, 2)
+  reg_no         BigInt
+  reg_dt         DateTime @db.DateTime(0)
+  mod_no         BigInt
+  mod_dt         DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_recept_prjt {
+  id           BigInt   @id @unique(map: "sc_recept_hsptl_prjt_id_uindex") @default(autoincrement())
+  reception_cd String   @db.VarChar(50)
+  clco_no      BigInt
+  prjt_no      BigInt
+  clco_dept_cd String   @db.VarChar(20)
+  logo_img_url String?  @db.VarChar(500)
+  reg_no       BigInt
+  reg_dt       DateTime @db.DateTime(0)
+  mod_no       BigInt
+  mod_dt       DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_recept_prjt_prtpnt {
+  prjt_no        BigInt
+  emp_no         BigInt
+  clco_no        BigInt
+  prtpnt_sctn_cd String    @db.VarChar(20)
+  prtpnt_nm      String    @db.VarChar(100)
+  clco_dept_cd   String?   @db.VarChar(20)
+  brdt           DateTime  @db.Date
+  mbph_no        String    @db.VarChar(20)
+  gen_cd         String    @db.VarChar(20)
+  email_addr     String    @db.VarChar(255)
+  utztn_bgng_dt  DateTime? @db.DateTime(0)
+  migrateYn      Boolean   @default(false)
+  regr_no        BigInt
+  reg_dt         DateTime  @db.DateTime(0)
+  modr_no        BigInt
+  mod_dt         DateTime  @db.DateTime(0)
+
+  @@id([prjt_no, emp_no])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_recept_prjt_prtpnt_hlth_mng {
+  prjt_no     BigInt
+  emp_no      BigInt
+  bass_cd     String   @db.VarChar(20)
+  reg_mng_val Decimal  @db.Decimal(12, 2)
+  regr_no     BigInt
+  reg_dt      DateTime @db.DateTime(0)
+  modr_no     BigInt
+  mod_dt      DateTime @db.DateTime(0)
+
+  @@id([prjt_no, emp_no, bass_cd])
+}
+
+model sc_scrape {
+  scrape_no      BigInt   @id @default(autoincrement())
+  scrape_hist_no BigInt
+  prjt_no        BigInt
+  emp_no         String   @db.VarChar(128)
+  check_year     String   @db.VarChar(4)
+  check_date     DateTime @db.Date
+  gender         String   @db.VarChar(1)
+  birth_dt       String   @db.VarChar(8)
+  hosp_name      String?  @db.VarChar(100)
+  mnfst_cont     String?  @db.Text
+  regr_no        BigInt
+  reg_dt         DateTime @db.DateTime(0)
+  modr_no        BigInt
+  mod_dt         DateTime @db.DateTime(0)
+
+  @@unique([prjt_no, emp_no, check_date], map: "sc_scrape_UN")
+}
+
+model sc_scrape_auth_hist {
+  hist_auth_no          BigInt   @id @default(autoincrement())
+  token                 String?  @db.Text
+  tx_id                 String?  @db.VarChar(128)
+  cx_id                 String?  @db.VarChar(128)
+  req_tx_id             String?  @db.VarChar(128)
+  private_auth_type     String   @db.VarChar(128)
+  user_name             String   @db.VarChar(64)
+  birth_date            String   @db.VarChar(8)
+  user_cellphone_number String   @db.VarChar(11)
+  status                String?  @db.VarChar(100)
+  message               String?  @db.Text
+  regr_no               BigInt
+  reg_dt                DateTime @db.DateTime(0)
+  modr_no               BigInt
+  mod_dt                DateTime @db.DateTime(0)
+}
+
+model sc_scrape_hist {
+  scrape_hist_no BigInt   @id @default(autoincrement())
+  hist_auth_no   BigInt
+  status         String   @db.VarChar(128)
+  message        String   @db.Text
+  regr_no        BigInt
+  reg_dt         DateTime @db.DateTime(0)
+  modr_no        BigInt
+  mod_dt         DateTime @db.DateTime(0)
+}
+
+model sc_scrape_item {
+  scrape_item_no BigInt   @id @default(autoincrement())
+  scrape_no      BigInt
+  item_name      String   @db.VarChar(128)
+  item_value     String   @db.VarChar(128)
+  regr_no        BigInt
+  reg_dt         DateTime @db.DateTime(0)
+  modr_no        BigInt
+  mod_dt         DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_snrio_fdbk {
+  care_msg_no BigInt
+  snrio_seq   Int      @db.SmallInt
+  fdbk_seq    Int      @db.SmallInt
+  btn_nm      String   @db.VarChar(100)
+  ans_cont    String   @db.Text
+  regr_no     BigInt
+  reg_dt      DateTime @db.DateTime(0)
+  modr_no     BigInt
+  mod_dt      DateTime @db.DateTime(0)
+
+  @@id([care_msg_no, snrio_seq, fdbk_seq])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_snrio_img {
+  care_msg_no     BigInt
+  snrio_seq       Int      @db.SmallInt
+  img_seq         Int      @db.SmallInt
+  img_file_mng_no BigInt
+  btn_use_tf      String   @db.Char(1)
+  regr_no         BigInt
+  reg_dt          DateTime @db.DateTime(0)
+  modr_no         BigInt
+  mod_dt          DateTime @db.DateTime(0)
+
+  @@id([care_msg_no, snrio_seq, img_seq])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_snrio_mebi_ans {
+  care_msg_no       BigInt
+  snrio_seq         Int      @db.SmallInt
+  mebi_qstn_seq     Int      @db.SmallInt
+  mebi_ans_seq      Int      @db.SmallInt
+  ans_nm            String?  @db.VarChar(100)
+  mebi_rcrd_bass_cd String?  @db.VarChar(20)
+  ans_dsse_cd       String?  @db.VarChar(20)
+  regr_no           BigInt
+  reg_dt            DateTime @db.DateTime(0)
+  modr_no           BigInt
+  mod_dt            DateTime @db.DateTime(0)
+
+  @@id([care_msg_no, snrio_seq, mebi_qstn_seq, mebi_ans_seq])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_snrio_mebi_qstn {
+  care_msg_no        BigInt
+  snrio_seq          Int      @db.SmallInt
+  mebi_qstn_seq      Int      @db.SmallInt
+  qstn_nm            String   @db.VarChar(100)
+  dup_rspns_prms_tf  String   @default("n") @db.Char(1)
+  ans_item_cnt       Int?
+  dup_rspns_prms_cnt Int?
+  regr_no            BigInt
+  reg_dt             DateTime @db.DateTime(0)
+  modr_no            BigInt
+  mod_dt             DateTime @db.DateTime(0)
+
+  @@id([care_msg_no, snrio_seq, mebi_qstn_seq])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_token_hist {
+  token_num       BigInt   @id @default(autoincrement())
+  access_token    String   @db.VarChar(100)
+  expiration_time DateTime @db.DateTime(0)
+  reg_dt          DateTime @db.DateTime(0)
+  mod_dt          DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_vsn_mng {
+  vsn_mng_no BigInt   @id @default(autoincrement())
+  app_nm     String   @default("") @db.VarChar(200)
+  app_os     String   @db.VarChar(10)
+  vsn_val    String   @db.VarChar(20)
+  force_tf   String   @db.Char(1)
+  vsn_ttl    String?  @db.VarChar(100)
+  regr_no    BigInt
+  reg_dt     DateTime @db.DateTime(0)
+  modr_no    BigInt
+  mod_dt     DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_wlk_hist {
+  hist_no       BigInt   @id @default(autoincrement())
+  mbr_no        BigInt
+  hist_ymd      DateTime @db.Date
+  wlk_cnt       Int
+  mvmn_dstn_val Decimal? @db.Decimal(12, 2)
+  cnsm_cal_val  Decimal? @db.Decimal(12, 2)
+  regr_no       BigInt
+  reg_dt        DateTime @db.DateTime(0)
+  modr_no       BigInt
+  mod_dt        DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sc_wlk_wktg {
+  wktg_no       BigInt   @id @default(autoincrement())
+  mbr_no        BigInt
+  wlk_ymd       DateTime @db.Date
+  wktg_dt       DateTime @db.DateTime(0)
+  wlk_cnt       Int
+  mvmn_dstn_val Decimal? @db.Decimal(12, 2)
+  cnsm_cal_val  Decimal? @db.Decimal(12, 2)
+  regr_no       BigInt
+  reg_dt        DateTime @db.DateTime(0)
+  modr_no       BigInt
+  mod_dt        DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_cftr {
+  clco_no    BigInt
+  plnt_no    String   @db.VarChar(20)
+  cftr_no    Int
+  cftr_nm    String   @db.VarChar(100)
+  oper_hr_gd String?  @db.VarChar(255)
+  regr_no    BigInt
+  reg_dt     DateTime @db.DateTime(0)
+  modr_no    BigInt
+  mod_dt     DateTime @db.DateTime(0)
+
+  @@id([clco_no, plnt_no, cftr_no])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_cftr_dmnu {
+  clco_no BigInt
+  plnt_no String   @db.VarChar(20)
+  cftr_no Int
+  dmnu_no Int
+  dmnu_nm String   @db.VarChar(100)
+  regr_no BigInt
+  reg_dt  DateTime @db.DateTime(0)
+  modr_no BigInt
+  mod_dt  DateTime @db.DateTime(0)
+
+  @@id([clco_no, plnt_no, cftr_no, dmnu_no])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_cftr_mntb {
+  mntb_no      BigInt   @id @default(autoincrement())
+  clco_no      BigInt
+  plnt_no      String   @db.VarChar(20)
+  cftr_no      Int
+  dmnu_no      Int
+  dmnu_ymd     DateTime @db.Date
+  meal_sctn_cd String   @db.VarChar(20)
+  menu_nm      String?  @db.VarChar(100)
+  fd_1_nm      String?  @db.VarChar(100)
+  fd_2_nm      String?  @db.VarChar(100)
+  fd_3_nm      String?  @db.VarChar(100)
+  fd_4_nm      String?  @db.VarChar(100)
+  fd_5_nm      String?  @db.VarChar(100)
+  fd_6_nm      String?  @db.VarChar(100)
+  fd_7_nm      String?  @db.VarChar(100)
+  fd_8_nm      String?  @db.VarChar(100)
+  fd_9_nm      String?  @db.VarChar(100)
+  ttlt_cal_val Decimal? @db.Decimal(12, 2)
+  plor_nm      String?  @db.VarChar(100)
+  regr_no      BigInt
+  reg_dt       DateTime @db.DateTime(0)
+  modr_no      BigInt
+  mod_dt       DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_cmt_rsvt {
+  gd_no                BigInt   @id @default(autoincrement())
+  clco_no              BigInt
+  expsr_tf             String   @db.Char(1)
+  gd_ttl               String   @db.VarChar(255)
+  expsr_end_dt_stng_tf String   @db.Char(1)
+  expsr_bgng_dt        DateTime @db.DateTime(0)
+  expsr_end_dt         DateTime @db.DateTime(0)
+  gd_cont              String   @db.Text
+  btn_nm               String   @db.VarChar(100)
+  btn_lnk_url          String   @db.VarChar(255)
+  regr_no              BigInt
+  reg_dt               DateTime @db.DateTime(0)
+  modr_no              BigInt
+  mod_dt               DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_cmt_rsvt_atch_file {
+  atch_file_no     BigInt   @id @default(autoincrement())
+  gd_no            BigInt
+  atch_file_mng_no BigInt
+  regr_no          BigInt
+  reg_dt           DateTime @db.DateTime(0)
+  modr_no          BigInt
+  mod_dt           DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_dmnu_clsf {
+  dmnu_clsf_no      BigInt   @id @default(autoincrement())
+  dnrm_no           BigInt
+  brkf_meal_pvsn_tf String   @db.Char(1)
+  lnch_meal_pvsn_tf String   @db.Char(1)
+  dnnr_meal_pvsn_tf String   @db.Char(1)
+  ntml_pvsn_tf      String   @db.Char(1)
+  dmnu_clsf_nm      String   @db.VarChar(100)
+  brkf_oper_hr_cnt  Int?
+  lnch_oper_hr_cnt  Int?
+  dnnr_oper_hr_cnt  Int?
+  ntml_oper_hr_cnt  Int?
+  regr_no           BigInt
+  reg_dt            DateTime @db.DateTime(0)
+  modr_no           BigInt
+  mod_dt            DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_dmnu_cmps_fd {
+  mntb_no     BigInt
+  cmps_fd_seq Int      @db.SmallInt
+  fd_nm       String   @db.VarChar(100)
+  regr_no     BigInt
+  reg_dt      DateTime @db.DateTime(0)
+  modr_no     BigInt
+  mod_dt      DateTime @db.DateTime(0)
+
+  @@id([mntb_no, cmps_fd_seq])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_dmnu_mng {
+  dmnu_mng_no          BigInt   @id @default(autoincrement())
+  dmnu_clsf_no         BigInt
+  expsr_tf             String   @db.Char(1)
+  ymd_info_nm          String   @db.VarChar(100)
+  dmnu_mng_ttl         String   @db.VarChar(255)
+  dmnu_mng_reg_mthd_cd String   @db.VarChar(20)
+  regr_no              BigInt
+  reg_dt               DateTime @db.DateTime(0)
+  modr_no              BigInt
+  mod_dt               DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_dnrm {
+  dnrm_no              BigInt   @id @default(autoincrement())
+  clco_no              BigInt
+  expsr_tf             String   @db.Char(1)
+  clsf_seq             Int      @db.SmallInt
+  indct_seq            Int      @db.SmallInt
+  dnrm_nm              String   @db.VarChar(100)
+  up_dnrm_no           String?  @db.VarChar(20)
+  brkf_meal_pvsn_tf    String?  @db.Char(1)
+  lnch_meal_pvsn_tf    String?  @db.Char(1)
+  dnnr_meal_pvsn_tf    String?  @db.Char(1)
+  ntml_pvsn_tf         String?  @db.Char(1)
+  hr_info_inpt_mthd_cd String?  @db.VarChar(20)
+  brkf_oper_hr_cnt     Int?
+  lnch_oper_hr_cnt     Int?
+  dnnr_oper_hr_cnt     Int?
+  ntml_oper_hr_cnt     Int?
+  dmnu_clsf_cnt        Int?
+  regr_no              BigInt
+  reg_dt               DateTime @db.DateTime(0)
+  modr_no              BigInt
+  mod_dt               DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_dnrm_oper_hr_info {
+  dnrm_no      BigInt
+  meal_sctn_cd String   @db.VarChar(20)
+  dmnu_clsf_no BigInt
+  hr_info_seq  Int      @db.SmallInt
+  oper_hr_gd   String   @db.VarChar(255)
+  regr_no      BigInt
+  reg_dt       DateTime @db.DateTime(0)
+  modr_no      BigInt
+  mod_dt       DateTime @db.DateTime(0)
+
+  @@id([dnrm_no, meal_sctn_cd, dmnu_clsf_no, hr_info_seq])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_email_atch_file {
+  atch_file_no     BigInt   @id @default(autoincrement())
+  email_sndng_no   BigInt
+  atch_file_mng_no BigInt
+  regr_no          BigInt
+  reg_dt           DateTime @db.DateTime(0)
+  modr_no          BigInt
+  mod_dt           DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_email_sndng {
+  email_sndng_no  BigInt    @id @default(autoincrement())
+  sndng_trgt_cd   String    @db.VarChar(20)
+  email_ttl       String    @db.VarChar(255)
+  email_cont      String    @db.Text
+  sndng_tp_cd     String    @db.VarChar(20)
+  rsvt_sndng_dt   DateTime? @db.DateTime(0)
+  sndng_stts_cd   String?   @db.VarChar(20)
+  ttlt_sndng_cnt  Int?
+  sndng_fail_cnt  Int?
+  rcptn_idnty_cnt Int?
+  clco_no         BigInt?
+  prjt_no         BigInt?
+  prgm_no         BigInt?
+  regr_no         BigInt
+  reg_dt          DateTime  @db.DateTime(0)
+  modr_no         BigInt
+  mod_dt          DateTime  @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_email_tmpl {
+  email_tmpl_no      BigInt   @id @default(autoincrement())
+  email_tmpl_sctn_cd String   @db.VarChar(20)
+  email_ttl          String   @db.VarChar(255)
+  email_cont         String   @db.Text
+  aim_trgt_tf        String   @default("n") @db.Char(1)
+  clco_trgt_tf       String   @default("n") @db.Char(1)
+  fix_tf             String   @default("N") @db.Char(1)
+  regr_no            BigInt
+  reg_dt             DateTime @db.DateTime(0)
+  modr_no            BigInt
+  mod_dt             DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_evt {
+  evt_no        BigInt   @default(autoincrement())
+  evt_grp_no    BigInt
+  expsr_stts_cd String   @db.VarChar(20)
+  evt_sctn_cd   String   @db.VarChar(20)
+  win_evt_no    BigInt?
+  evt_nm        String   @db.VarChar(100)
+  evt_ttl       String   @db.VarChar(255)
+  expsr_bgng_dt DateTime @db.DateTime(0)
+  expsr_end_dt  DateTime @db.DateTime(0)
+  evt_cont      String   @db.Text
+  reward_ttl    String?  @db.VarChar(255)
+  regr_no       BigInt
+  reg_dt        DateTime @db.DateTime(0)
+  modr_no       BigInt
+  mod_dt        DateTime @db.DateTime(0)
+
+  @@id([evt_no, evt_grp_no, evt_sctn_cd])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_evt_atch_file {
+  atch_file_no            BigInt   @id @default(autoincrement())
+  evt_no                  BigInt
+  banner_atch_file_mng_no BigInt
+  top_atch_file_mng_no    BigInt
+  off_atch_file_mng_no    BigInt
+  regr_no                 BigInt
+  reg_dt                  DateTime @db.DateTime(0)
+  modr_no                 BigInt
+  mod_dt                  DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_evt_grp {
+  evt_grp_no    BigInt   @id @default(autoincrement())
+  clco_no       BigInt
+  prjt_no       BigInt?
+  expsr_stts_cd String   @db.VarChar(20)
+  evt_grp_nm    String   @db.VarChar(100)
+  evt_grp_ttl   String   @db.VarChar(255)
+  expsr_bgng_dt DateTime @db.DateTime(0)
+  expsr_end_dt  DateTime @db.DateTime(0)
+  regr_no       BigInt
+  reg_dt        DateTime @db.DateTime(0)
+  modr_no       BigInt
+  mod_dt        DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_evt_grp_atch_file {
+  atch_file_no     BigInt   @id @default(autoincrement())
+  evt_grp_no       BigInt
+  atch_file_mng_no BigInt
+  regr_no          BigInt
+  reg_dt           DateTime @db.DateTime(0)
+  modr_no          BigInt
+  mod_dt           DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_evt_ptcp {
+  evt_ptcp_no BigInt   @id @default(autoincrement())
+  evt_no      BigInt
+  mbr_no      BigInt
+  regr_no     BigInt
+  reg_dt      DateTime @db.DateTime(0)
+  modr_no     BigInt
+  mod_dt      DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_faq {
+  faq_no        BigInt   @id @default(autoincrement())
+  inq_clsf_no   BigInt
+  expsr_stts_cd String   @db.VarChar(20)
+  expsr_rstr_cd String   @db.VarChar(20)
+  expsr_seq     Int      @default(99) @db.SmallInt
+  faq_ttl       String   @db.VarChar(255)
+  qstn_cont     String   @db.Text
+  ans_cont      String   @db.Text
+  regr_no       BigInt
+  reg_dt        DateTime @db.DateTime(0)
+  modr_no       BigInt
+  mod_dt        DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_faq_expsr_clco {
+  faq_no  BigInt
+  clco_no BigInt
+  regr_no BigInt
+  reg_dt  DateTime @db.DateTime(0)
+  modr_no BigInt
+  mod_dt  DateTime @db.DateTime(0)
+
+  @@id([faq_no, clco_no])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_hlth_cntr_ntc {
+  ntc_no               BigInt   @id @default(autoincrement())
+  clco_no              BigInt
+  expsr_tf             String   @db.Char(1)
+  uprw_fix_tf          String   @db.Char(1)
+  ntc_ttl              String   @db.VarChar(255)
+  expsr_end_dt_stng_tf String   @db.Char(1)
+  expsr_bgng_dt        DateTime @db.DateTime(0)
+  expsr_end_dt         DateTime @db.DateTime(0)
+  ntc_cont             String   @db.Text
+  regr_no              BigInt
+  reg_dt               DateTime @db.DateTime(0)
+  modr_no              BigInt
+  mod_dt               DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_hlth_cntr_ntc_atch_file {
+  atch_file_no     BigInt   @id @default(autoincrement())
+  ntc_no           BigInt
+  atch_file_mng_no BigInt
+  regr_no          BigInt
+  reg_dt           DateTime @db.DateTime(0)
+  modr_no          BigInt
+  mod_dt           DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_hlth_lbry {
+  reg_no    BigInt   @id @default(autoincrement())
+  clco_no   BigInt
+  prjt_no   BigInt
+  reg_tp_cd String   @db.VarChar(20)
+  ttl       String   @db.VarChar(255)
+  cont      String   @db.Text
+  use_tf    String   @db.Char(1)
+  regr_no   BigInt
+  reg_dt    DateTime @db.DateTime(0)
+  modr_no   BigInt
+  mod_dt    DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_inq {
+  inq_no       BigInt   @id @default(autoincrement())
+  inq_mbr_no   BigInt
+  clco_no      BigInt
+  clco_dept_cd String?  @db.VarChar(20)
+  inq_clsf_no  BigInt
+  inq_ttl      String   @db.VarChar(255)
+  inq_cont     String   @db.Text
+  rls_tf       String   @db.Char(1)
+  ans_stts_cd  String   @db.VarChar(20)
+  regr_no      BigInt
+  reg_dt       DateTime @db.DateTime(0)
+  modr_no      BigInt
+  mod_dt       DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_inq_ans {
+  ans_no      BigInt   @id @default(autoincrement())
+  inq_no      BigInt
+  ans_mngr_no BigInt
+  ans_cont    String   @db.Text
+  regr_no     BigInt
+  reg_dt      DateTime @db.DateTime(0)
+  modr_no     BigInt
+  mod_dt      DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_inq_atch_file {
+  atch_file_no     BigInt   @id @default(autoincrement())
+  inq_no           BigInt
+  atch_file_mng_no BigInt
+  regr_no          BigInt
+  reg_dt           DateTime @db.DateTime(0)
+  modr_no          BigInt
+  mod_dt           DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_inq_clsf {
+  inq_clsf_no BigInt   @id @default(autoincrement())
+  clco_no     BigInt
+  inq_clsf_nm String   @db.VarChar(100)
+  expsr_seq   Int      @default(99) @db.SmallInt
+  use_tf      String   @db.Char(1)
+  regr_no     BigInt
+  reg_dt      DateTime @db.DateTime(0)
+  modr_no     BigInt
+  mod_dt      DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_mntb {
+  mntb_no      BigInt   @id @default(autoincrement())
+  dnrm_no      BigInt
+  dmnu_clsf_no BigInt
+  dmnu_ymd     DateTime @db.Date
+  dmnu_mng_no  BigInt?
+  meal_sctn_cd String   @db.VarChar(20)
+  rprs_fd_nm   String   @db.VarChar(100)
+  ttlt_cal_val Decimal  @db.Decimal(12, 2)
+  plor_nm      String?  @db.VarChar(100)
+  regr_no      BigInt
+  reg_dt       DateTime @db.DateTime(0)
+  modr_no      BigInt
+  mod_dt       DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_ntc {
+  ntc_no               BigInt   @id @default(autoincrement())
+  clco_no              BigInt
+  prjt_no              BigInt?
+  expsr_tf             String   @db.Char(1)
+  uprw_fix_tf          String   @db.Char(1)
+  ntc_ttl              String   @db.VarChar(255)
+  expsr_end_dt_stng_tf String   @db.Char(1)
+  expsr_bgng_dt        DateTime @db.DateTime(0)
+  expsr_end_dt         DateTime @db.DateTime(0)
+  ntc_cont             String   @db.Text
+  regr_no              BigInt
+  reg_dt               DateTime @db.DateTime(0)
+  modr_no              BigInt
+  mod_dt               DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_ntc_atch_file {
+  atch_file_no     BigInt   @id @default(autoincrement())
+  ntc_no           BigInt
+  atch_file_mng_no BigInt
+  regr_no          BigInt
+  reg_dt           DateTime @db.DateTime(0)
+  modr_no          BigInt
+  mod_dt           DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_plnt {
+  clco_no BigInt
+  plnt_no String   @db.VarChar(20)
+  plnt_nm String   @db.VarChar(100)
+  regr_no BigInt
+  reg_dt  DateTime @db.DateTime(0)
+  modr_no BigInt
+  mod_dt  DateTime @db.DateTime(0)
+
+  @@id([clco_no, plnt_no])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_popup {
+  popup_no         BigInt   @id @default(autoincrement())
+  clco_no          BigInt
+  prjt_no          BigInt
+  ttl              String   @db.VarChar(255)
+  expsr_tf         String   @db.Char(1)
+  expsr_bgng_ymd   DateTime @db.Date
+  expsr_end_ymd    DateTime @db.Date
+  img_file_mng_no  BigInt
+  cls_btn_use_tf   String   @db.Char(1)
+  re_expsr_phbt_cd String   @db.VarChar(20)
+  btn_stng_cd      String   @db.VarChar(20)
+  popup_tp_cd      String   @db.VarChar(20)
+  dtl_url          String?  @db.VarChar(255)
+  regr_no          BigInt
+  reg_dt           DateTime @db.DateTime(0)
+  modr_no          BigInt
+  mod_dt           DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_prgm_gd {
+  gd_no                BigInt   @id @default(autoincrement())
+  clco_no              BigInt
+  expsr_tf             String   @db.Char(1)
+  gd_ttl               String   @db.VarChar(255)
+  expsr_end_dt_stng_tf String   @db.Char(1)
+  expsr_bgng_dt        DateTime @db.DateTime(0)
+  expsr_end_dt         DateTime @db.DateTime(0)
+  gd_cont              String   @db.Text
+  logo_img_file_mng_no BigInt?
+  regr_no              BigInt
+  reg_dt               DateTime @db.DateTime(0)
+  modr_no              BigInt
+  mod_dt               DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_prgm_gd_atch_file {
+  atch_file_no     BigInt   @id @default(autoincrement())
+  gd_no            BigInt
+  atch_file_mng_no BigInt
+  regr_no          BigInt
+  reg_dt           DateTime @db.DateTime(0)
+  modr_no          BigInt
+  mod_dt           DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_push {
+  push_no         BigInt    @id @default(autoincrement())
+  push_ttl        String    @db.VarChar(255)
+  sndng_tp_cd     String    @db.VarChar(20)
+  rsvt_sndng_dt   DateTime? @db.DateTime(0)
+  sndng_trgt_cd   String    @db.VarChar(20)
+  push_cont       String    @db.Text
+  lnk_url         String?   @db.VarChar(255)
+  sndng_stts_cd   String    @db.VarChar(20)
+  sndng_dt        DateTime? @db.DateTime(0)
+  push_tp_cd      String    @default("ETC") @db.VarChar(20)
+  ttlt_sndng_cnt  Int?
+  sndng_fail_cnt  Int?
+  rcptn_idnty_cnt Int?
+  clco_no         BigInt?
+  prjt_no         BigInt?
+  prgm_no         BigInt?
+  week            Int?
+  regr_no         BigInt
+  reg_dt          DateTime  @db.DateTime(0)
+  modr_no         BigInt
+  mod_dt          DateTime  @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_push_app_link {
+  id            BigInt   @id @default(autoincrement())
+  page_type_cd  String   @db.VarChar(45)
+  top_path      String   @db.VarChar(50)
+  top_path_name String   @db.VarChar(100)
+  url           String?  @db.VarChar(500)
+  url_name      String?  @db.VarChar(500)
+  indct_seq     Int
+  desc          String?  @db.VarChar(1000)
+  useYn         Boolean  @default(true)
+  regr_no       BigInt
+  modr_no       BigInt
+  reg_dt        DateTime @db.DateTime(0)
+  mod_dt        DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_push_mbr {
+  push_mbr_no BigInt   @id @default(autoincrement())
+  mbr_no      BigInt
+  push_no     BigInt
+  regr_no     BigInt
+  reg_dt      DateTime @db.DateTime(0)
+  modr_no     BigInt
+  mod_dt      DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_push_tmpl {
+  tmpl_no        BigInt    @id @default(autoincrement())
+  day            String    @db.VarChar(25)
+  time           String    @db.VarChar(100)
+  push_ttl       String    @db.VarChar(255)
+  push_cont      String    @db.Text
+  landing_url_no BigInt?
+  prgm_no        BigInt?
+  care_yn        String?   @db.VarChar(100)
+  week           Int?
+  desc           String?   @db.VarChar(500)
+  reg_dt         DateTime? @db.DateTime(0)
+  regr_no        BigInt?
+  mod_dt         DateTime? @db.DateTime(0)
+  modr_no        BigInt?
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_sms_sndng {
+  sms_sndng_no         BigInt    @id @default(autoincrement())
+  sndng_trgt_cd        String    @db.VarChar(20)
+  sms_ttl              String?   @db.VarChar(255)
+  sms_cont             String    @db.Text
+  atch_img_file_mng_no BigInt?
+  sndng_tp_cd          String    @db.VarChar(20)
+  rsvt_sndng_dt        DateTime? @db.DateTime(0)
+  sndng_stts_cd        String?   @db.VarChar(20)
+  ttlt_sndng_cnt       Int?
+  sndng_fail_cnt       Int?
+  rcptn_idnty_cnt      Int?
+  clco_no              BigInt?
+  prjt_no              BigInt?
+  prgm_no              BigInt?
+  week                 Int?
+  regr_no              BigInt
+  reg_dt               DateTime  @db.DateTime(0)
+  modr_no              BigInt
+  mod_dt               DateTime  @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_sms_tmpl {
+  sms_tmpl_no          BigInt   @id @default(autoincrement())
+  sms_tmpl_sctn_cd     String   @db.VarChar(20)
+  sms_ttl              String   @db.VarChar(255)
+  sms_cont             String   @db.Text
+  atch_img_file_mng_no BigInt?
+  aim_trgt_tf          String   @default("n") @db.Char(1)
+  clco_trgt_tf         String   @default("n") @db.Char(1)
+  regr_no              BigInt
+  reg_dt               DateTime @db.DateTime(0)
+  modr_no              BigInt
+  mod_dt               DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_srvc_gd {
+  gd_no                BigInt   @id @default(autoincrement())
+  clco_no              BigInt
+  expsr_tf             String   @db.Char(1)
+  gd_ttl               String   @db.VarChar(255)
+  expsr_end_dt_stng_tf String   @db.Char(1)
+  expsr_bgng_dt        DateTime @db.DateTime(0)
+  expsr_end_dt         DateTime @db.DateTime(0)
+  gd_cont              String   @db.Text
+  regr_no              BigInt
+  reg_dt               DateTime @db.DateTime(0)
+  modr_no              BigInt
+  mod_dt               DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_srvc_gd_atch_file {
+  atch_file_no     BigInt   @id @default(autoincrement())
+  gd_no            BigInt
+  atch_file_mng_no BigInt
+  regr_no          BigInt
+  reg_dt           DateTime @db.DateTime(0)
+  modr_no          BigInt
+  mod_dt           DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_strs_insp {
+  gd_no                BigInt   @id @default(autoincrement())
+  clco_no              BigInt
+  expsr_tf             String   @db.Char(1)
+  gd_ttl               String   @db.VarChar(255)
+  expsr_end_dt_stng_tf String   @db.Char(1)
+  expsr_bgng_dt        DateTime @db.DateTime(0)
+  expsr_end_dt         DateTime @db.DateTime(0)
+  gd_cont              String   @db.Text
+  btn_stng_cd          String?  @db.VarChar(20)
+  dtl_url              String?  @db.VarChar(255)
+  regr_no              BigInt
+  reg_dt               DateTime @db.DateTime(0)
+  modr_no              BigInt
+  mod_dt               DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_strs_insp_atch_file {
+  atch_file_no     BigInt   @id @default(autoincrement())
+  gd_no            BigInt
+  atch_file_mng_no BigInt
+  regr_no          BigInt
+  reg_dt           DateTime @db.DateTime(0)
+  modr_no          BigInt
+  mod_dt           DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_trms {
+  trms_no      BigInt   @id @default(autoincrement())
+  clco_no      BigInt
+  trms_knd_cd  String   @db.VarChar(20)
+  esntl_agr_tf String   @db.Char(1)
+  sort_seq     Int      @db.SmallInt
+  trms_cont    String   @db.MediumText
+  use_tf       String   @db.Char(1)
+  regr_no      BigInt
+  reg_dt       DateTime @db.DateTime(0)
+  modr_no      BigInt
+  mod_dt       DateTime @db.DateTime(0)
+  trms_ttl     String   @db.VarChar(255)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sv_trms_hist {
+  hist_no      BigInt   @id @default(autoincrement())
+  trms_no      BigInt
+  clco_no      BigInt
+  trms_knd_cd  String   @db.VarChar(20)
+  esntl_agr_tf String   @db.Char(1)
+  sort_seq     Int      @db.SmallInt
+  trms_cont    String   @db.MediumText
+  use_tf       String   @db.Char(1)
+  regr_no      BigInt
+  reg_dt       DateTime @db.DateTime(0)
+  modr_no      BigInt
+  mod_dt       DateTime @db.DateTime(0)
+  trms_ttl     String   @db.VarChar(255)
+}
+
+model sy_abs_risk {
+  abs_no BigInt @id @default(autoincrement())
+  gender String @db.VarChar(1)
+  age    Int
+  risk   Int
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sy_atch_file_mng {
+  file_mng_no  BigInt   @id @default(autoincrement())
+  file_path_nm String   @db.VarChar(255)
+  uld_file_nm  String   @db.VarChar(100)
+  strg_file_nm String   @db.VarChar(100)
+  file_sz      BigInt
+  extn_nm      String?  @db.VarChar(100)
+  mbr_no       BigInt?
+  regr_no      BigInt
+  reg_dt       DateTime @db.DateTime(0)
+  modr_no      BigInt
+  mod_dt       DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sy_auth {
+  auth_no           BigInt   @id @default(autoincrement())
+  auth_trgt_sctn_cd String   @db.VarChar(20)
+  auth_grnt_sctn_cd String   @db.VarChar(20)
+  scrn_no           BigInt?
+  menu_no           BigInt?
+  auth_yn           String   @db.Char(1)
+  auth_grp_no       BigInt?
+  mngr_no           BigInt?
+  regr_no           BigInt
+  reg_dt            DateTime @db.DateTime(0)
+  modr_no           BigInt
+  mod_dt            DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sy_auth_grp {
+  auth_grp_no      BigInt   @id @default(autoincrement())
+  auth_grp_nm      String   @db.VarChar(100)
+  auth_grp_sctn_cd String   @db.VarChar(20)
+  auth_grp_desc    String?  @db.Text
+  use_tf           String   @default("y") @db.Char(1)
+  regr_no          BigInt
+  reg_dt           DateTime @db.DateTime(0)
+  modr_no          BigInt
+  mod_dt           DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sy_bass_cd {
+  bass_cd               String   @id @db.VarChar(20)
+  bass_cd_nm            String   @db.VarChar(100)
+  clsf_cd               String   @db.VarChar(20)
+  unit_cd               String?  @db.VarChar(20)
+  sect_stng_gen_sctn_tf String   @db.Char(1)
+  mssn_rcrd_tf          String?  @db.Char(1)
+  rskf_reg_seq          Int?     @db.SmallInt
+  dsse_cd               String?  @db.VarChar(20)
+  regr_no               BigInt
+  reg_dt                DateTime @db.DateTime(0)
+  modr_no               BigInt
+  mod_dt                DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sy_bass_cd_hist {
+  hist_no               BigInt   @id @default(autoincrement())
+  bass_cd               String   @db.VarChar(20)
+  bass_cd_nm            String   @db.VarChar(100)
+  clsf_cd               String   @db.VarChar(20)
+  unit_cd               String?  @db.VarChar(20)
+  sect_stng_gen_sctn_tf String   @db.Char(1)
+  rskf_reg_seq          Int?     @db.SmallInt
+  dsse_cd               String?  @db.VarChar(20)
+  regr_no               BigInt
+  reg_dt                DateTime @db.DateTime(0)
+  modr_no               BigInt
+  mod_dt                DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sy_bass_cd_sect_stng {
+  bass_cd          String   @db.VarChar(20)
+  stng_sctn_cd     String   @db.VarChar(20)
+  sect_stng_tf     String   @db.Char(1)
+  sect_bgng_val    Decimal? @db.Decimal(12, 2)
+  sect_bgng_rng_cd String?  @db.VarChar(20)
+  sect_end_val     Decimal? @db.Decimal(12, 2)
+  sect_end_rng_cd  String?  @db.VarChar(20)
+  regr_no          BigInt
+  reg_dt           DateTime @db.DateTime(0)
+  modr_no          BigInt
+  mod_dt           DateTime @db.DateTime(0)
+
+  @@id([bass_cd, stng_sctn_cd])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sy_bass_cd_sect_stng_hist {
+  hist_no          BigInt
+  bass_cd          String   @db.VarChar(20)
+  stng_sctn_cd     String   @db.VarChar(20)
+  sect_stng_tf     String   @db.Char(1)
+  sect_bgng_val    Decimal? @db.Decimal(12, 2)
+  sect_bgng_rng_cd String?  @db.VarChar(20)
+  sect_end_val     Decimal? @db.Decimal(12, 2)
+  sect_end_rng_cd  String?  @db.VarChar(20)
+  regr_no          BigInt
+  reg_dt           DateTime @db.DateTime(0)
+  modr_no          BigInt
+  mod_dt           DateTime @db.DateTime(0)
+
+  @@id([hist_no, stng_sctn_cd])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sy_bass_mx {
+  mx_no   BigInt   @id @default(autoincrement())
+  waist   Int      @db.TinyInt
+  tg      Int      @db.TinyInt
+  hdl     Int      @db.TinyInt
+  bp      Int      @db.TinyInt
+  fbs     Int      @db.TinyInt
+  prgm_no BigInt
+  regr_no BigInt
+  reg_dt  DateTime @db.DateTime(0)
+  modr_no BigInt
+  mod_dt  DateTime @db.DateTime(0)
+  clco_no BigInt
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sy_clco {
+  clco_no       BigInt   @id @default(autoincrement())
+  clco_nm       String   @db.VarChar(100)
+  clco_sctn_cd  String?  @db.VarChar(12)
+  use_url       String?  @db.VarChar(255)
+  hlth_rsrv_url String?  @db.VarChar(500)
+  use_bgng_ymd  DateTime @db.Date
+  use_end_ymd   DateTime @db.Date
+  use_stts_cd   String   @db.VarChar(20)
+  pic_nm        String?  @db.VarChar(100)
+  pic_dept_nm   String?  @db.VarChar(100)
+  pic_telno     String?  @db.VarChar(20)
+  b2b_type      String?  @db.VarChar(10)
+  comp_code     String?  @db.VarChar(100)
+  bot_code      String?  @db.VarChar(100)
+  regr_no       BigInt
+  reg_dt        DateTime @db.DateTime(0)
+  modr_no       BigInt
+  mod_dt        DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sy_clco_dept {
+  clco_no      BigInt
+  clco_dept_cd String   @db.VarChar(20)
+  clco_dept_nm String   @db.VarChar(100)
+  regr_no      BigInt
+  reg_dt       DateTime @db.DateTime(0)
+  modr_no      BigInt
+  mod_dt       DateTime @db.DateTime(0)
+
+  @@id([clco_no, clco_dept_cd])
+}
+
+model sy_cmplx_risk {
+  cmplx_no  BigInt   @id @default(autoincrement())
+  has_chole Boolean
+  start_age Int
+  end_age   Int
+  gender    String   @db.VarChar(1)
+  weight    Decimal? @db.Decimal(10, 2)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sy_dtl_cd {
+  grp_cd   String   @db.VarChar(20)
+  cd       String   @db.VarChar(20)
+  cd_nm    String   @db.VarChar(100)
+  cd_desc  String?  @db.Text
+  sort_seq Int?     @db.SmallInt
+  use_tf   String   @db.Char(1)
+  regr_no  BigInt
+  reg_dt   DateTime @db.DateTime(0)
+  modr_no  BigInt
+  mod_dt   DateTime @db.DateTime(0)
+
+  @@id([grp_cd, cd])
+}
+
+model sy_exam_integ_clas {
+  clas_no        BigInt   @id @default(autoincrement())
+  item_cd        String   @db.VarChar(8)
+  item_name      String   @db.VarChar(100)
+  item_alias     String   @db.VarChar(100)
+  biz_exam_cd    String?  @db.VarChar(6)
+  is_corp_item   String   @default("N") @db.Char(1)
+  exam_ctl_cd    String   @db.VarChar(3)
+  exam_prt_cd    String   @db.VarChar(3)
+  use_gender     String?  @db.VarChar(1)
+  std_item_cd    String   @db.VarChar(20)
+  std_min_val    Decimal? @db.Decimal(10, 2)
+  std_max_val    Decimal? @db.Decimal(10, 2)
+  male_min_val   Decimal? @db.Decimal(10, 2)
+  male_max_val   Decimal? @db.Decimal(10, 2)
+  female_min_val Decimal? @db.Decimal(10, 2)
+  female_max_val Decimal? @db.Decimal(10, 2)
+  unit           String?  @db.VarChar(20)
+  bass_cd        String?  @db.VarChar(2)
+  chart_type     String?  @db.VarChar(10)
+  data_type      String?  @db.VarChar(10)
+  data_grp       String?  @db.VarChar(100)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sy_food {
+  food_no          BigInt    @id @default(autoincrement())
+  food_cd          String    @unique(map: "idx_food_cd") @db.VarChar(7)
+  db_group_name    String    @db.VarChar(20)
+  sub_group_name   String    @db.VarChar(20)
+  desc_kor         String    @db.VarChar(100)
+  research_year    String?   @db.VarChar(4)
+  sub_ref_name     String?   @db.VarChar(50)
+  origin_name      String?   @db.VarChar(100)
+  group_name       String?   @db.VarChar(50)
+  per_serving_size BigInt?
+  per_serving_unit String?   @db.VarChar(10)
+  serving_g_size   String?   @db.VarChar(10)
+  serving_ml_size  String?   @db.VarChar(10)
+  nutr_cont1       String?   @db.VarChar(20)
+  nutr_cont2       String?   @db.VarChar(20)
+  nutr_cont3       String?   @db.VarChar(20)
+  nutr_cont4       String?   @db.VarChar(20)
+  nutr_cont5       String?   @db.VarChar(20)
+  nutr_cont6       String?   @db.VarChar(20)
+  nutr_cont7       String?   @db.VarChar(20)
+  nutr_cont8       String?   @db.VarChar(20)
+  nutr_cont9       String?   @db.VarChar(100)
+  regr_no          BigInt?
+  reg_dt           DateTime? @db.DateTime(0)
+  modr_no          BigInt?
+  mod_dt           DateTime? @db.DateTime(0)
+  dept_nm          String?   @db.VarChar(100)
+
+  @@index([desc_kor], map: "idx_desc_kor")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sy_grp_cd {
+  grp_cd      String   @id @db.VarChar(20)
+  grp_cd_nm   String   @db.VarChar(100)
+  grp_cd_desc String?  @db.Text
+  use_tf      String   @db.Char(1)
+  regr_no     BigInt
+  reg_dt      DateTime @db.DateTime(0)
+  modr_no     BigInt
+  mod_dt      DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sy_menu {
+  menu_no      BigInt   @id @default(autoincrement())
+  menu_nm      String   @db.VarChar(100)
+  use_tf       String   @db.Char(1)
+  expsr_tf     String   @db.Char(1)
+  indct_seq    Int      @db.SmallInt
+  menu_desc    String?  @db.Text
+  up_menu_no   BigInt?
+  note_cont    String?  @db.Text
+  link_scrn_no BigInt?
+  icon_nm      String?  @db.VarChar(100)
+  menu_url     String?  @db.VarChar(255)
+  regr_no      BigInt
+  reg_dt       DateTime @db.DateTime(0)
+  modr_no      BigInt
+  mod_dt       DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sy_mngr {
+  mngr_no       BigInt    @id @default(autoincrement())
+  mngr_id       String    @db.VarChar(128)
+  mngr_pswd     String    @db.VarChar(500)
+  mngr_nm       String    @db.VarChar(128)
+  mngr_sctn_cd  String    @db.VarChar(20)
+  mngr_stts_cd  String?   @db.VarChar(20)
+  email         String    @db.VarChar(255)
+  mbph_no       String    @db.VarChar(50)
+  use_tf        String    @db.Char(1)
+  clco_no       BigInt?
+  clco_dept_cd  String?   @db.VarChar(20)
+  use_bgng_ymd  DateTime? @db.Date
+  use_end_ymd   DateTime? @db.Date
+  salt_val      String?   @db.VarChar(100)
+  cnsr_sctn_cd  String?   @db.VarChar(20)
+  fail_cnt      BigInt?   @default(0)
+  auth_suces_tf String?   @db.Char(1)
+  auth_key      String?   @db.VarChar(100)
+  reg_dt        DateTime  @db.DateTime(0)
+  modr_no       BigInt
+  mod_dt        DateTime  @db.DateTime(0)
+  regr_no       BigInt
+  auth_token    String?   @db.VarChar(512)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sy_mngr_auth_grp {
+  mngr_no     BigInt
+  auth_grp_no BigInt
+  regr_no     BigInt
+  reg_dt      DateTime @db.DateTime(0)
+  modr_no     BigInt
+  mod_dt      DateTime @db.DateTime(0)
+
+  @@id([mngr_no, auth_grp_no])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sy_mngr_auth_grp_hist {
+  hist_no     BigInt   @id @default(autoincrement())
+  mngr_no     BigInt
+  auth_grp_no BigInt
+  type        String   @db.Char(1)
+  reg_dt      DateTime @db.DateTime(0)
+  modr_no     BigInt
+  mod_dt      DateTime @db.DateTime(0)
+  regr_no     BigInt
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sy_mngr_lgn_hist {
+  hist_no     BigInt   @id @default(autoincrement())
+  mngr_no     BigInt
+  lgn_dt      DateTime @db.DateTime(0)
+  lgn_ip_addr String   @db.VarChar(255)
+  regr_no     BigInt
+  reg_dt      DateTime @db.DateTime(0)
+  modr_no     BigInt
+  mod_dt      DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sy_mngr_pwd_hist {
+  hist_no    BigInt   @id @default(autoincrement())
+  mngr_no    BigInt
+  modr_tp_cd String   @db.VarChar(20)
+  regr_no    BigInt
+  reg_dt     DateTime @db.DateTime(0)
+  modr_no    BigInt
+  mod_dt     DateTime @db.DateTime(0)
+}
+
+model sy_mngr_req_hist {
+  hist_no     BigInt    @id @default(autoincrement())
+  mngr_no     BigInt
+  mngr_nm     String    @db.VarChar(128)
+  auth_grp_nm String    @db.VarChar(100)
+  ip_addr     String    @db.VarChar(255)
+  req_uri     String    @db.VarChar(1000)
+  req_method  String?   @db.VarChar(50)
+  req_body    String?   @db.LongText
+  reg_dt      DateTime? @db.DateTime(0)
+  regr_no     BigInt?
+  mod_dt      DateTime? @db.DateTime(0)
+  modr_no     BigInt?
+}
+
+model sy_prgm_cycle {
+  mapp_no      BigInt @id @default(autoincrement())
+  tgt_grp      String @db.VarChar(1)
+  prgm_no      Int
+  next_prgm_no Int
+}
+
+model sy_prgm_rltv {
+  rltv_no     BigInt @id @default(autoincrement())
+  prgm_no     Int
+  org_prgm_no Int
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sy_scrn {
+  scrn_no        BigInt   @id @default(autoincrement())
+  scrn_nm        String   @db.VarChar(100)
+  scrn_tp_cd     String   @db.VarChar(20)
+  scrn_url       String   @db.VarChar(255)
+  scrn_desc_cont String?  @db.Text
+  menu_no        BigInt?
+  regr_no        BigInt
+  reg_dt         DateTime @db.DateTime(0)
+  modr_no        BigInt
+  mod_dt         DateTime @db.DateTime(0)
+}
